@@ -1,3 +1,3 @@
-public enum TempType {
+public enum TemperatureUnit {
     Celciusz, Fahrenheit, Kelvin
 }
