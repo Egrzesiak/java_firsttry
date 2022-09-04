@@ -13,21 +13,30 @@ public class Menu{
     }
 
     public void mainMenu(){
-        clrscr();
-        System.out.println("__-- KALKULATOR TEMPERATUR --__");
-        System.out.println("Podaj wartość temperatury:");
-        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
-        a = scanner.nextDouble();
+        temp = new Temperature();
+        TemperatureUnit tuu = TemperatureUnit.fromString("K");
+        System.out.println(tuu.toString());
+        do {
+            clrscr();
+            System.out.println("__-- KALKULATOR TEMPERATUR --__");
+            System.out.println("Podaj wartosc temperatury:");
 
-        while (!b) {
-            System.out.println("Podaj jednostkę (K = Kelvin C=Celsjusz F=Fahrenheit):");
+            Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+            a = scanner.nextDouble();
+
+            System.out.println("Podaj jednostke temperatury (K = Kelvin C=Celsjusz F=Fahrenheit):");
+
             s = scanner.next();
-            temp = new Temperature(a, s);
-            if (temp.getUnit().equals("null")) System.out.println("Błędna jednostka!");
-            else b = true;
-        }
+            temp.setTemperature(a,s);
+
+            if (!TemperatureUnit.contains(s)) System.out.println("Bledna jednostka!");
+            else if (!temp.isSet()) System.out.println("Blad wprowadzania danych!!!");
+            System.out.println(a.toString()+"--"+s+"--"+temp.isSet()+"=="+TemperatureUnit.contains(s));//+"--"+temp.getTemperatureString());
+        }while (!temp.isSet());
+
         clrscr();
-        if (temp != null) System.out.println(temp.getFullTemperature());
+
+        if (temp.isSet()) System.out.println(temp.getTemperatureString());
     }
 
     public static void clrscr() {

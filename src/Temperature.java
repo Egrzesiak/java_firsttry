@@ -1,54 +1,110 @@
 public class Temperature {
-    private double a;
+    private double c,k,f;
     private TemperatureUnit temperatureUnit;
+    private boolean isSet;
+    private String ex = "";
 
-    public Temperature(Double a, TemperatureUnit type){
-        this.a = a;
-        this.temperatureUnit = type;
+    public Temperature(){
+        isSet = false;
     }
 
-    public Temperature(Double a, String s) {
-        this.a = a;
-        this.temperatureUnit = null;
-        if (s.equals("K")){
-            this.temperatureUnit = TemperatureUnit.Kelvin;
+    public boolean setTemperature(Double a, TemperatureUnit type){
+        try {
+            this.temperatureUnit = type;
+            switch (type) {
+                case Kelvin -> {
+                    this.k = a;
+                    this.c = a + 273.15;
+                    this.f = (a + 459.67) * 5 / 9;
+                    isSet = true;
+                }
+                case Celciusz -> {
+                    this.k = a - 273.15;
+                    this.c = a;
+                    this.f = ((a - 32) / 1.8);
+                    isSet = true;
+                }
+                case Fahrenheit -> {
+                    this.k = (a * 1.8) - 459.67;
+                    this.c = (a * 1.8) + 32;
+                    this.f = a;
+                    isSet = true;
+                }
+                default -> {
+                    isSet = false;
+                }
+            }
         }
-        if (s.equals("C")){
-            this.temperatureUnit = TemperatureUnit.Celciusz;
+        catch (Exception ex){
+            this.ex = String.valueOf(ex);
+            isSet = false;
         }
-        if (s.equals("F")){
-            this.temperatureUnit = TemperatureUnit.Fahrenheit;
+
+        return isSet;
+    }
+
+    public boolean setTemperature(Double a, String s){
+        if(TemperatureUnit.contains(s)) {
+            return setTemperature(a,TemperatureUnit.fromString(s));
         }
+        else{
+            isSet = false;
+        }
+        return isSet;
     }
 
     public Double getKelvin(){
-        if(this.temperatureUnit== TemperatureUnit.Kelvin) return a;
-        if(this.temperatureUnit== TemperatureUnit.Celciusz) return (a+273.15);
-        if(this.temperatureUnit== TemperatureUnit.Fahrenheit) return ((a+459.67)*5/9);
-        return null;
+        return this.k;
     }
 
     public Double getCelcius(){
-        if(this.temperatureUnit== TemperatureUnit.Kelvin) return (a-273.15);
-        if(this.temperatureUnit== TemperatureUnit.Celciusz) return a;
-        if(this.temperatureUnit== TemperatureUnit.Fahrenheit) return ((a-32)/1.8);
-        return null;
+        return this.c;
     }
 
     public Double getFahrenheit(){
-        if(this.temperatureUnit== TemperatureUnit.Kelvin) return ((a*1.8)-459.67);
-        if(this.temperatureUnit== TemperatureUnit.Celciusz) return ((a*1.8)+32);
-        if(this.temperatureUnit== TemperatureUnit.Fahrenheit) return a;
-        return null;
+        return this.f;
     }
 
     public String getUnit(){
-        if(this.temperatureUnit == null) return "null";
         return this.temperatureUnit.toString();
     }
 
-    public String getFullTemperature(){
-        return "Twoja temperatura to: " + String.valueOf(this.a) + " " + this.getUnit();
+    public boolean isSet() {
+        return this.isSet;
+    }
+
+    public String getErrorMessage() {
+        return this.ex;
+    }
+
+    public String getType(){
+        return this.temperatureUnit.toString();
+    }
+    public String getTemperatureString(){
+        return getTemperatureString(this.temperatureUnit);
+    }
+    public String getTemperatureString(TemperatureUnit tu) {
+        Double a;
+        String s;
+        switch (tu) {
+            case Fahrenheit -> {
+                a = this.f;
+                s = "Skala Fahrenheita [oF]:";
+            }
+            case Kelvin -> {
+                a = this.k;
+                s = "Skala Kelvina [C]: ";
+            }
+            case Celciusz -> {
+                a = this.c;
+                s = "Skala Celsjusza [C]: ";
+            }
+            default -> {
+                a = 666.66;
+                s = "Nieznany błąd!";
+            }
+        }
+        return s.concat(String.valueOf(a));
     }
 }
 
