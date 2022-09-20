@@ -89,11 +89,11 @@ public class Temperature {
         switch (tu) {
             case Fahrenheit -> {
                 a = this.f;
-                s = "Skala Fahrenheita [oF]:";
+                s = "Skala Fahrenheita [F]:";
             }
             case Kelvin -> {
                 a = this.k;
-                s = "Skala Kelvina [C]: ";
+                s = "Skala Kelvina [K]: ";
             }
             case Celciusz -> {
                 a = this.c;
